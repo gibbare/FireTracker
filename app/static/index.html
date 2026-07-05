@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Skogsbrandskarta</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+<!-- Top bar -->
+<header id="topbar">
+  <span id="app-title">🔥 Brandkarta</span>
+  <div id="topbar-actions">
+    <button id="btn-filter" class="icon-btn" title="Filter" aria-label="Öppna filter">⚙</button>
+    <button id="btn-log" class="icon-btn" title="Felloggar" aria-label="Öppna felloggar">📋</button>
+  </div>
+</header>
+
+<!-- Stale-data warning banner -->
+<div id="stale-banner" class="hidden">
+  ⚠ Data kan vara inaktuell — senaste lyckade uppdatering: <span id="stale-time">okänd</span>
+</div>
+
+<!-- Map -->
+<div id="map"></div>
+
+<!-- Filter panel (slide-in) -->
+<div id="filter-panel" class="side-panel hidden" role="dialog" aria-label="Filter">
+  <div class="panel-header">
+    <h2>Filter</h2>
+    <button class="close-btn" data-close="filter-panel">✕</button>
+  </div>
+  <div class="panel-body">
+    <label>
+      Status
+      <select id="filter-status">
+        <option value="">Alla</option>
+        <option value="active" selected>Aktiva</option>
+        <option value="inactive">Historiska</option>
+      </select>
+    </label>
+    <label>
+      Från datum
+      <input type="date" id="filter-from" />
+    </label>
+    <label>
+      Till datum
+      <input type="date" id="filter-to" />
+    </label>
+    <button id="btn-apply-filter" class="primary-btn">Hämta</button>
+  </div>
+</div>
+
+<!-- Ingestion log panel -->
+<div id="log-panel" class="side-panel hidden" role="dialog" aria-label="Hämtningslogg">
+  <div class="panel-header">
+    <h2>Hämtningslogg</h2>
+    <button class="close-btn" data-close="log-panel">✕</button>
+  </div>
+  <div id="log-entries" class="panel-body"></div>
+</div>
+
+<!-- Fire detail bottom-sheet / side-panel -->
+<div id="detail-panel" class="bottom-sheet hidden" role="dialog" aria-label="Branddetaljer">
+  <div class="sheet-handle"></div>
+  <div class="panel-header">
+    <h2>Branddetaljer</h2>
+    <button class="close-btn" data-close="detail-panel">✕</button>
+  </div>
+  <div id="detail-body" class="panel-body"></div>
+</div>
+
+<!-- Overlay backdrop -->
+<div id="backdrop" class="hidden"></div>
+
+<!-- Disclaimer tooltip -->
+<div id="disclaimer">
+  Satellitdata (VIIRS/FIRMS) — ej officiella brandrapporter
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="/static/app.js"></script>
+</body>
+</html>
