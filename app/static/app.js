@@ -38,22 +38,35 @@ document.getElementById('btn-log').addEventListener('click', () => {
 });
 
 // ── Fire colour / size by intensity (FRP) ────────────────────────────────────
+// Heuristic: max_frp > 5 MW AND detections >= 2 → likely wildfire (orange palette)
+// Otherwise → other heat source (yellow palette, e.g. agriculture, industry)
+function isLikelyWildfire(fire) {
+  return (fire.max_frp || 0) > 5 && (fire.detections || 0) >= 2;
+}
+
 function markerStyle(fire) {
   const frp = fire.max_frp || 0;
   const isActive = fire.status === 'active';
+  const wildfire = isLikelyWildfire(fire);
 
   let color;
-  if (!isActive)          color = '#666';
-  else if (frp > 100)     color = '#ff1100';
-  else if (frp > 30)      color = '#ff6600';
-  else if (frp > 5)       color = '#ffaa00';
-  else                    color = '#ffdd33';
+  if (!isActive) {
+    color = wildfire ? '#a05020' : '#888';
+  } else if (wildfire) {
+    // Orange family — likely wildfire
+    if (frp > 100)    color = '#ff3d00';
+    else if (frp > 30) color = '#ff6b00';
+    else               color = '#ff9500';
+  } else {
+    // Yellow family — other heat source (agriculture, industry, etc.)
+    color = '#ffd700';
+  }
 
   const size = isActive
     ? Math.max(10, Math.min(28, 10 + Math.sqrt(frp) * 2))
     : 8;
 
-  return { color, size };
+  return { color, size, wildfire };
 }
 
 // ── Render fires on map ───────────────────────────────────────────────────────
@@ -116,9 +129,12 @@ async function showDetail(fireId) {
   const badge = p.status === 'active'
     ? '<span class="badge-active">Aktiv</span>'
     : '<span class="badge-inactive">Inaktiv</span>';
+  const typeBadge = isLikelyWildfire(p)
+    ? '<span class="badge-wildfire">Trolig skogsbrand</span>'
+    : '<span class="badge-other">Annan värmekälla</span>';
 
   document.getElementById('detail-body').innerHTML = `
-    <div class="detail-row"><span class="detail-label">Status</span><span class="detail-value">${badge}</span></div>
+    <div class="detail-row"><span class="detail-label">Status</span><span class="detail-value">${badge} ${typeBadge}</span></div>
     <div class="detail-row"><span class="detail-label">Första detektion</span><span class="detail-value">${fmt(p.first_seen)}</span></div>
     <div class="detail-row"><span class="detail-label">Senast synlig</span><span class="detail-value">${fmt(p.last_seen)}</span></div>
     <div class="detail-row"><span class="detail-label">Varaktighet</span><span class="detail-value">${durLabel(p.duration_hours)}</span></div>

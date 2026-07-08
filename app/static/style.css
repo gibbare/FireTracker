@@ -220,6 +220,24 @@ label select, label input {
   border-radius: 999px;
   font-weight: 600;
 }
+.badge-wildfire {
+  display: inline-block;
+  background: #ff6b00;
+  color: #fff;
+  font-size: .75rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+.badge-other {
+  display: inline-block;
+  background: #665500;
+  color: #ffd700;
+  font-size: .75rem;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-weight: 600;
+}
 
 /* ── Log entries ── */
 .log-entry {
