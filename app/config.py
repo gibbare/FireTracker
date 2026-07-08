@@ -6,7 +6,7 @@ class Settings(BaseSettings):
     firms_map_key: str = ""
     firms_source: str = "VIIRS_SNPP_NRT"
     firms_area: str = "4,54,32,71"   # Norden bounding box
-    firms_day_range: int = 3
+    firms_day_range: int = 3   # VIIRS_SNPP_NRT accepts max 5
     fetch_interval_hours: int = 4
     database_url: str = "sqlite+aiosqlite:///./fire_tracker.db"
     # How many hours without detection before a fire is considered inactive

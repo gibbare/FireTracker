@@ -35,7 +35,7 @@ async def run_ingestion(db: AsyncSession) -> None:
             map_key=settings.firms_map_key,
             source=settings.firms_source,
             area=settings.firms_area,
-            day_range=settings.firms_day_range,
+            day_range=min(settings.firms_day_range, 5),
         )
 
         fires = build_fire_clusters(

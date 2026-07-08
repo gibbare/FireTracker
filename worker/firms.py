@@ -9,7 +9,7 @@ import httpx
 FIRMS_BASE = "https://firms.modaps.eosdis.nasa.gov/api/area/csv"
 
 ERROR_EXPLANATIONS: dict[str, str] = {
-    "400": "Felaktig förfrågan — kontrollera att FIRMS_AREA och FIRMS_SOURCE är korrekta.",
+    "400": "Felaktig förfrågan — vanligaste orsakerna: FIRMS_DAY_RANGE är satt för högt (max 5 för VIIRS_SNPP_NRT), eller FIRMS_AREA/FIRMS_SOURCE är felaktiga.",
     "401": "Ogiltig API-nyckel (MAP_KEY) — nyckel saknas, har gått ut, eller är felaktig. Kontrollera miljövariabeln FIRMS_MAP_KEY.",
     "403": "Åtkomst nekad — MAP_KEY saknar behörighet för den begärda källan.",
     "429": "Rate limit nådd — för många anrop inom 10 minuter. Vänta och försök igen.",
